@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Coloring Art</title>
+    <style media="screen">
+    * {
+      margin:10;
+      padding;5;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    div.container{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+      grid-gap: 1.5rem;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      padding: 1rem 0;
+      background-color: #ccc;
+    }
+    .container img {
+      width: 100%;
+    }
+    section {
+      height: 800px;
+    }
+    #choose{
+      background-color: rgb(240,230,140);
+    }
+    #paint{
+      background-color: rgb(189,183,107);
+      position: relative;
+    }
+    #send{
+      background-color: rgb(143,188,143);
+    }
+    #response{
+      background-color: rgb(102,205,170);
+    }
+    #painting {
+      background-color: white;
+      border: 1px solid red;
+      margin-left: 60px;
+    }
+    #paint .tools {
+      position: absolute;
+      top:2em;
+      left: 15em;
+      display: flex;
+      flex-direction: column;
+      width: 50px;
+    }
+    .displayBlock{display: block;}
+    .displayNone{display: none;}
+    .redBorder{border: 2px solid red;}
+    </style>
+  </head>
+  <body>
+<h1>Coloring Art</h1>
+<section id="choose">
+  <h2>Choose your artwork</h2>
+  <div class="container">
+    <img src="http://www.placekitten.com/600/400" title="first" alt="">
+    <img src="http://www.placecage.com/600/400" title="second" alt="">
+    <img src="http://www.fillmurray.com/600/400" title="third" alt="">
+    <img src="http://www.placekitten.com/600/400" title="fourth" alt="">
+    <img src="http://www.placekitten.com/600/400" title="fifth" alt="">
+    <img src="http://www.placekitten.com/600/400" title="sixth" alt="">
+
+  </div>
+</section>
+<section id="paint">
+  <h2>paint</h2>
+  <canvas id="painting" width="700" height="500"></canvas>
+  <div class="tools">
+    <p>tools</p>
+    <img src="http://placekitten.com/50/50" alt="">
+    <img src="http://placekitten.com/50/50" alt="">
+    <img src="http://placekitten.com/50/50" alt="">
+    <img src="http://placekitten.com/50/50" alt="">
+    <img src="http://placekitten.com/50/50" alt="">
+    <img src="http://placekitten.com/50/50" alt="">
+    <img src="http://placekitten.com/50/50" alt="">
+    <img src="http://placekitten.com/50/50" alt="">
+  </div>
+  <div class="buttons">
+    <button type="button" name="button" id = "save">Save</button>
+    <button type="button" name="button" id = "startOver">Start over</button>
+  </div>
+</section>
+<section id="send">
+  <h2>send</h2>
+  <form class="" action="index.html" method="post">
+    <p>Please provide the email address you want to send your amazing art.</p>
+    <input type="text" name="" value="" id = "email">
+    <button type="button" name="button" id = "sendMail">Send</button>
+  </form>
+</section>
+<section id="response">
+  <h2>response</h2>
+  <p>Thank you for using the coloring art app.</p>
+  <button type="button" name="button" id="restart">Start over</button>
+</section>
+
+
+<script type="text/javascript">
+  let choose = document.querySelector('#choose')
+  let paint = document.querySelector('#paint')
+  let send = document.querySelector('#send')
+  let response = document.querySelector('#response')
+
+  choose.className = 'displayBlock'
+  paint.className = 'displayNone'
+  send.className = 'displayNone'
+  response.className = 'displayNone'
+
+  let container = document.querySelector('.container')
+  let containerImages = container.getElementsByTagName('img')
+
+  for (let item of containerImages){
+  item.addEventListener ('click', moveToPaintState, false)
+  item.className = "redBorder"
+ }
+
+ let c = document.querySelector('#painting')
+ let ctx = c.getContext('2d')
+
+  function moveToPaintState(e){
+    // choose.className = 'displayNone'
+    // paint.className = 'displayBlock'
+    swapPanels(choose, paint)
+    let imageSource = e.target.getAttribute('src')
+    ctx.drawImage(e.currentTarget, 50, 50)
+  }
+
+  let save = document.querySelector('#save')
+  save.addEventListener('click', saveFunction, false)
+  function saveFunction(){
+    // paint.className = 'displayNone'
+    // send.className = 'displayBlock'
+    swapPanels(paint, send)
+  }
+
+  let startOver = document.querySelector('#startOver')
+  startOver.addEventListener('click', startOverFunction, false)
+  function startOverFunction(){
+    // paint.className = 'displayNone'
+    // choose.className = 'displayBlock'
+    swapPanels(paint, choose)
+  }
+
+  let sendMail = document.querySelector('#sendMail')
+  sendMail.addEventListener('click', sendMailFunction, false)
+  function sendMailFunction(){
+    // send.className = 'displayNone'
+    // response.className = 'displayBlock'
+    swapPanels(send, response)
+  }
+
+  let restart = document.querySelector('#restart')
+  restart.addEventListener('click', restartMailFunction, false)
+  function restartMailFunction(){
+    // response.className = 'displayNone'
+    // choose.className = 'displayBlock'
+    swapPanels(response, choose)
+  }
+
+  function swapPanels(a, b){
+    a.className = 'displayNone'
+    b.className = 'displayBlock'
+  }
+
+
+
+</script>
+  </body>
+
+</html>

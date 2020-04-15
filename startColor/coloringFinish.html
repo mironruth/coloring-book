@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Coloring Art</title>
+  <style media="screen">
+    * {
+      margin:0;
+      padding:0;
+      box-sizing: border-box;
+    }
+    div.container{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+      grid-gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      padding: 1rem 0;
+      background-color: #ccc;
+    }
+    .container img {
+      width: 100%;
+    }
+    section {
+      height: 800px;
+      padding:1em;
+    }
+    #choose{
+      background-color: rgb(170, 241, 165);
+    }
+    #paint{
+      background-color: rgb(241, 165, 238);
+      position: relative;
+    }
+    #send{
+      background-color: rgb(165, 232, 241);
+    }
+    #response{
+      background-color: rgb(241, 222, 165);
+    }
+    #painting {
+      background-color: white;
+      border: 1px solid red;
+      margin-left: 60px;
+    }
+    #paint .tools {
+      position: absolute;
+      top:2em;;
+      display: flex;
+      flex-direction: column;
+      width: 50px;
+    }
+    .displayBlock{display: block;}
+    .displayNone{display: none;}
+    .showBorder{border:1px solid red;}
+    </style>
+</head>
+
+<body>
+  <h1>Coloring Art</h1>
+  <section id="choose">
+    <h2>Choose your artwork</h2>
+    <div class="container">
+      <!-- <img src="images/kitten400.jpg" title="first" alt="">
+      <img src="images/cage400.jpg" title="second" alt="">
+      <img src="images/murray400.jpg" title="third" alt="">
+      <img src="images/kitten400.jpg" title="fourth" alt="">
+      <img src="images/cage400.jpg" title="fifth" alt="">
+      <img src="images/murray400.jpg" title="sixth" alt=""> -->
+      <img src="http://www.placekitten.com/600/400" title="first" alt="">
+      <img src="http://www.placecage.com/600/400" title="second" alt="">
+      <img src="http://www.fillmurray.com/600/400" title="third" alt="">
+      <img src="http://www.placekitten.com/600/400" title="fourth" alt="">
+      <img src="http://www.placekitten.com/600/400" title="fifth" alt="">
+      <img src="http://www.placekitten.com/600/400" title="sixth" alt="">
+    </div>
+  </section>
+  <section id="paint">
+    <h2>paint</h2>
+    <canvas id="painting" width="700" height="500"></canvas>
+    <div class="tools">
+      <p>tools</p>
+      <img src="http://placekitten.com/50/50" alt="">
+      <img src="http://placekitten.com/50/50" alt="">
+      <img src="http://placekitten.com/50/50" alt="">
+      <img src="http://placekitten.com/50/50" alt="">
+      <img src="http://placekitten.com/50/50" alt="">
+      <img src="http://placekitten.com/50/50" alt="">
+      <img src="http://placekitten.com/50/50" alt="">
+      <img src="http://placekitten.com/50/50" alt="">
+    </div>
+    <div class="buttons">
+      <button type="button" name="button" id="save">Save</button>
+      <button type="button" name="button" id="startOver">Start over</button>
+    </div>
+  </section>
+  <section id="send">
+    <h2>send</h2>
+    <form class="" action="index.html" method="post">
+      <p>Please provide the email address you want to send your amazing art.</p>
+      <input type="text" name="" value="" id="email">
+      <button type="button" name="button" id="sendMail">Send</button>
+    </form>
+  </section>
+  <section id="response">
+    <h2>response</h2>
+    <p>Thank you for using the coloring art app.</p>
+    <button type="button" name="button" id="restart">Start over</button>
+  </section>
+
+
+  <script type="text/javascript">
+    let choose = document.querySelector('#choose')
+    let paint = document.querySelector('#paint')
+    let send = document.querySelector('#send')
+    let response = document.querySelector('#response')
+    choose.className = 'displayBlock'
+    paint.className = 'displayNone'
+    send.className = 'displayNone'
+    response.className = 'displayNone'
+
+    let container = document.querySelector('.container')
+    // https://www.w3schools.com/jsref/met_document_getelementsbytagname.asp
+    let containerImages = container.getElementsByTagName('img')
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of
+    for (let item of containerImages) {
+      // item.className='showBorder'
+      item.addEventListener('click',moveToPaintState,false)
+    }
+    let c = document.querySelector('#painting')
+    let ctx = c.getContext('2d')
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+
+    function moveToPaintState(e){
+      // choose.className = 'displayNone'
+      // paint.className = 'displayBlock'
+      swapPanels(choose,paint)
+      // https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute
+      //https://developer.mozilla.org/en-US/docs/Web/API/Event/target
+      //https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget
+      //https://developer.mozilla.org/en-US/docs/Web/API/Event/Comparison_of_Event_Targets
+      //https://codepen.io/theartboy/pen/RwPzeKZ
+      let imageSource = e.target.getAttribute('src')
+      console.log(`${e.target}  ${e.currentTarget}`);
+      ctx.drawImage(e.currentTarget,50,50)
+    }
+
+    function swapPanels(a,b) {
+      a.className = 'displayNone'
+      b.className = 'displayBlock'
+    }
+
+    let save = document.querySelector('#save')
+    save.addEventListener('click', saveFunction, false)
+    let startOver = document.querySelector('#startOver')
+    startOver.addEventListener('click', startOverFunction, false)
+
+    function startOverFunction(){
+      swapPanels(paint,choose)
+    }
+
+    function saveFunction(){
+      swapPanels(paint,send)
+    }
+
+    let sendMail = document.querySelector('#sendMail')
+    sendMail.addEventListener('click', sendMailFunction, false)
+    function sendMailFunction(){
+      swapPanels(send,response)
+    }
+
+    let restart = document.querySelector('#restart')
+    restart.addEventListener('click', restartFunction, false)
+    function restartFunction(){
+      swapPanels(response,choose)
+    }
+  </script>
+</body>
+
+</html>
